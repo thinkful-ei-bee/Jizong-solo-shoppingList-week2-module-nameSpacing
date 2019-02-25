@@ -1,3 +1,4 @@
+/* global Item */
 'use strict';
 
 const store = (function(){
@@ -10,11 +11,48 @@ const store = (function(){
   ];
   const hideCheckedItems = false;
   const searchTerm = '';
+  function addItem(name){
+    try{
+      Item.validateName(name);
+      this.items.push(Item.create(name));
+    }
+    catch(err){
+      console.log(`Can't add blank name:${err.message}`);
+    }}
+  function findById(id){
+    return this.items.find(item => item.id===id);
+  }  
   
+  function findAndToggleChecked(id){
+    const item = this.findById(id);
+    item.checked = !item.checked;
+  }
+
+  function findAndUpdateName(id,newName){
+    try{
+      Item.validateName(newName);
+      const item = this.findById(id);
+      item.name = newName;
+    }
+    catch(err){
+      console.log(`Cannot update name:${err.message}`);
+    }
+  }
+
+  function findAndDelete(id){
+    const item = this.findById(id);
+    let index = store.items.findIndex(item);
+    store.items.splice(index,1);
+  }
   return{
     items:items,
     hideCheckedItems:hideCheckedItems,
-    searchTerm:searchTerm
+    searchTerm:searchTerm,
+    addItem:addItem,
+    findById:findById,
+    findAndToggleChecked:findAndToggleChecked,
+    findAndUpdateName:findAndUpdateName,
+    findAndDelete:findAndDelete
   };
 }());
 
