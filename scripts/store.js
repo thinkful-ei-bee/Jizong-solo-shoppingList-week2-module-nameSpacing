@@ -40,10 +40,21 @@ const store = (function(){
   }
 
   function findAndDelete(id){
-    const item = this.findById(id);
-    let index = store.items.findIndex(item);
-    store.items.splice(index,1);
+    
+    
+    const index = this.items.findIndex(item=>item.id===id);
+    
+    this.items.splice(index,1);
   }
+
+  function toggleCheckedItemsFilter(){
+    this.hideCheckedItems = !this.hideCheckedItems;
+  }
+
+  function setSearchTerm(val) {
+    this.searchTerm = val;
+  }
+
   return{
     items:items,
     hideCheckedItems:hideCheckedItems,
@@ -52,7 +63,9 @@ const store = (function(){
     findById:findById,
     findAndToggleChecked:findAndToggleChecked,
     findAndUpdateName:findAndUpdateName,
-    findAndDelete:findAndDelete
+    findAndDelete:findAndDelete,
+    toggleCheckedItemsFilter:toggleCheckedItemsFilter,
+    setSearchTerm:setSearchTerm
   };
 }());
 
